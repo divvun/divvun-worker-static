@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Divvun API Documentation</title>
+    <style>
+        :root {
+            --primary-color: #1a237e;
+            --secondary-color: #3f51b5;
+            --accent-color: #7986cb;
+            --text-color: #2c3e50;
+            --background-color: #f5f6fa;
+            --code-background: #f8f9fa;
+            --success-color: #4caf50;
+            --error-color: #f44336;
+            --sidebar-width: 250px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--background-color);
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: var(--sidebar-width);
+            background-color: white;
+            padding: 2rem;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            border-right: 1px solid var(--code-background);
+            transition: transform 0.3s ease;
+        }
+
+        .sidebar h2 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar li {
+            margin-bottom: 0.5rem;
+        }
+
+        .sidebar a {
+            color: var(--text-color);
+            text-decoration: none;
+            display: block;
+            padding: 0.5rem;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+        }
+
+        .sidebar a:hover {
+            background-color: var(--code-background);
+            color: var(--primary-color);
+        }
+
+        .sidebar a.active {
+            background-color: var(--accent-color);
+            color: white;
+        }
+
+        .main-content {
+            flex: 1;
+            margin-left: var(--sidebar-width);
+            padding: 2rem;
+            transition: margin-left 0.3s ease;
+        }
+
+        .menu-toggle {
+            display: none;
+            position: fixed;
+            top: 1rem;
+            left: 1rem;
+            z-index: 1000;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: block;
+            }
+
+            .sidebar {
+                transform: translateX(-100%);
+                z-index: 999;
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+                padding: 1rem;
+            }
+
+            header {
+                padding: 1rem;
+                margin-bottom: 1rem;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .subtitle {
+                font-size: 1rem;
+            }
+
+            section {
+                padding: 1rem;
+                margin-bottom: 1rem;
+            }
+
+            .endpoint {
+                padding-left: 0.5rem;
+            }
+
+            pre {
+                padding: 0.5rem;
+                font-size: 0.9rem;
+            }
+
+            .method {
+                display: block;
+                margin-bottom: 0.5rem;
+            }
+
+            .response-type {
+                display: block;
+                margin: 0.5rem 0;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            .subtitle {
+                font-size: 0.9rem;
+            }
+
+            h2 {
+                font-size: 1.5rem;
+            }
+
+            h3 {
+                font-size: 1.2rem;
+            }
+
+            pre {
+                font-size: 0.8rem;
+            }
+
+            ul {
+                padding-left: 1rem;
+            }
+        }
+
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            width: 100%;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        section {
+            background: white;
+            border-radius: 8px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--secondary-color);
+        }
+
+        h3 {
+            color: var(--secondary-color);
+            margin: 1.5rem 0 1rem;
+        }
+
+        p {
+            margin-bottom: 1rem;
+        }
+
+        code {
+            background-color: var(--code-background);
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+        }
+
+        pre {
+            background-color: var(--code-background);
+            padding: 1rem;
+            border-radius: 4px;
+            overflow-x: auto;
+            margin: 1rem 0;
+        }
+
+        pre code {
+            background: none;
+            padding: 0;
+        }
+
+        ul {
+            padding-left: 2rem;
+        }
+
+        ul a {
+            color: var(--secondary-color);
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        ul a:hover {
+            color: var(--primary-color);
+            text-decoration: underline;
+        }
+
+        ul code {
+            color: var(--secondary-color);
+        }
+
+        .endpoint {
+            border-left: 4px solid var(--secondary-color);
+            padding-left: 1rem;
+            margin: 1rem 0;
+        }
+
+        .method {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            border-radius: 4px;
+            font-weight: bold;
+            margin-right: 0.5rem;
+        }
+
+        .get { background-color: var(--success-color); color: white; }
+        .post { background-color: var(--secondary-color); color: white; }
+        .put { background-color: #ff9800; color: black; }
+        .delete { background-color: var(--error-color); color: white; }
+
+        .response-type {
+            display: inline-block;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.9em;
+            background-color: var(--accent-color);
+            color: white;
+            margin-left: 0.5rem;
+        }
+
+        details {
+            margin: 1rem 0;
+            border: 1px solid var(--code-background);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        details summary {
+            padding: 0.5rem 1rem;
+            background-color: var(--code-background);
+            cursor: pointer;
+            user-select: none;
+            font-weight: 500;
+        }
+
+        details summary:hover {
+            background-color: var(--accent-color);
+            color: white;
+        }
+
+        details[open] summary {
+            border-bottom: 1px solid var(--accent-color);
+        }
+
+        details pre {
+            margin: 0;
+            border-radius: 0;
+        }
+    </style>
+</head>
+<body>
+    <button class="menu-toggle" onclick="toggleMenu()">Menu</button>
+    <nav class="sidebar">
+        <h2>API Endpoints</h2>
+        <ul>
+            <li><a href="#introduction">Introduction</a></li>
+            <hr/>
+            <li><a href="#health">Health Check</a></li>
+            <li><a href="#grammar">Grammar Check</a></li>
+            <li><a href="#speller">Spell Check</a></li>
+            <li><a href="#tts">Text-to-Speech</a></li>
+        </ul>
+    </nav>
+
+    <div class="main-content">
+        <header>
+            <div class="container">
+                <h1>Divvun API</h1>
+                <p class="subtitle">Documentation for the Divvun API endpoints</p>
+            </div>
+        </header>
+
+        <main class="container">
+            <section>
+                <h2>Introduction</h2>
+                <p>Welcome to the Divvun API documentation. This API provides endpoints for interacting with the Divvun service.</p>
+            </section>
+
+            <section>
+                <h2>Base URL</h2>
+                <p>All API endpoints are relative to the base URL:</p>
+                <pre><code>https://api-giellalt.uit.no</code></pre>
+            </section>
+
+            <section>
+                <h2>Endpoints</h2>
+                
+                <div class="endpoint" id="health">
+                    <h3>Health Check</h3>
+                    <p><span class="method get">GET</span> <code>/health</code> <span class="response-type">application/json</span></p>
+                    <p>Check the health status of the API.</p>
+                    <details>
+                        <summary>Response</summary>
+                        <pre><code>{
+    "status": "ok"
+}</code></pre>
+                    </details>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        function toggleMenu() {
+            const sidebar = document.querySelector('.sidebar');
+            sidebar.classList.toggle('open');
+        }
+
+        // Close sidebar when clicking outside on mobile
+        document.addEventListener('click', function(event) {
+            const sidebar = document.querySelector('.sidebar');
+            const menuToggle = document.querySelector('.menu-toggle');
+            
+            if (window.innerWidth <= 768 && 
+                !sidebar.contains(event.target) && 
+                !menuToggle.contains(event.target) && 
+                sidebar.classList.contains('open')) {
+                sidebar.classList.remove('open');
+            }
+        });
+    </script>
+</body>
+</html>

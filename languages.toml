@@ -1,0 +1,43 @@
+[available.grammar]
+ga = "Gaeilge"
+fo = "føroyskt"
+smj = "julevsámegiella"
+se = "davvisámegiella"
+nb = "norsk bokmål"
+sma = "Åarjelsaemien gïele"
+sms = "nuõrttsääʹmǩiõll"
+smn = "anarâškielâ"
+kl = "kalaallisut"
+
+[available.speller]
+se = "davvisámegiella"
+smn = "anarâškielâ"
+sma = "Åarjelsaemien gïele"
+smj = "julevsámegiella"
+sms = "nuõrttsääʹmǩiõll"
+
+[available.hyphenation]
+se = "davvisámegiella"
+
+[available.tts]
+
+[available.tts.se]
+name = "davvisámegiella"
+
+[available.tts.se.voices]
+biret = { name = "Biret", gender = "female" }
+mahtte = { name = "Máhtte", gender = "male" }
+
+[available.tts.sma]
+name = "Åarjelsaemien gïele"
+
+[available.tts.sma.voices]
+aanna = { name = "Aanna", gender = "female", speaker = 1 }
+
+[available.tts.smj]
+name = "julevsámegiella"
+
+[available.tts.smj.voices]
+nihkol = { name = "Nihkol", gender = "male" }
+abmut = { name = "Ábmut", gender = "male", speaker = 1 }
+sigga = { name = "Siggá", gender = "female" }
