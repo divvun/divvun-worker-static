@@ -55,10 +55,38 @@ struct VoiceConfig {
     language: Option<u32>,
 }
 
+#[derive(Debug, Clone, Serialize, Deserialize)]
+struct LegacyLanguagesConfig {
+    grammar: HashMap<String, String>,
+    speller: HashMap<String, String>,
+    hyphenation: HashMap<String, String>,
+}
+
+impl From<&LanguagesConfig> for LegacyLanguagesConfig {
+    fn from(languages: &LanguagesConfig) -> Self {
+        Self {
+            grammar: languages
+                .grammar
+                .iter()
+                .map(|(k, v)| (k.clone(), v.name.clone()))
+                .collect(),
+            speller: languages
+                .speller
+                .iter()
+                .map(|(k, v)| (k.clone(), v.name.clone()))
+                .collect(),
+            hyphenation: languages
+                .hyphenation
+                .iter()
+                .map(|(k, v)| (k.clone(), v.name.clone()))
+                .collect(),
+        }
+    }
+}
+
 #[handler]
 async fn languages_get(Data(languages): Data<&LanguagesConfig>) -> impl IntoResponse {
-    // TODO: remove the config layer
-    Json(serde_json::json!({ "available": languages })).into_response()
+    Json(serde_json::json!({ "available": LegacyLanguagesConfig::from(languages) })).into_response()
 }
 
 #[handler]
