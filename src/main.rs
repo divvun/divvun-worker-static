@@ -90,13 +90,13 @@ async fn index_get(Data(languages): Data<&LanguagesConfig>) -> impl IntoResponse
 {}
                 </ul>
                 <details>
-                    <summary>Request</summary>
+                    <summary>Request <code>application/json</code></summary>
                     <pre><code>{{
     "text": "sami"
 }}</code></pre>
                 </details>
                 <details>
-                    <summary>Response</summary>
+                    <summary>Response <code>application/json</code></summary>
                     <pre><code>{{
   "text": "sami",
   "errs": [
@@ -139,13 +139,13 @@ async fn index_get(Data(languages): Data<&LanguagesConfig>) -> impl IntoResponse
 {}
                 </ul>
                 <details>
-                    <summary>Request</summary>
+                    <summary>Request <code>application/json</code></summary>
                     <pre><code>{{
     "text": "sami"
 }}</code></pre>
                 </details>
                 <details>
-                    <summary>Response</summary>
+                    <summary>Response <code>application/json</code></summary>
                     <pre><code>{{
   "text": "sami",
   "results": [
@@ -223,19 +223,23 @@ async fn index_get(Data(languages): Data<&LanguagesConfig>) -> impl IntoResponse
 {}
                 </ul>
                 <details>
-                    <summary>Request</summary>
+                    <summary>Request <code>application/json</code></summary>
                     <pre><code>{{
     "text": "Sample text to convert to speech"
 }}</code></pre>
                 </details>
                 <details>
-                    <summary>Response</summary>
+                    <summary>Response <code>audio/wav</code></summary>
                     <p>WAV audio file containing the synthesized speech.</p>
                 </details>
             </div>"#,
                 sorted_langs.iter()
                     .map(|(tag, config)| {
-                        let voices = config.voices.iter()
+                        let mut voices: Vec<_> = config.voices.iter().collect();
+                        voices.sort_by_key(|(voice_id, _)| *voice_id);
+
+                        let voices = voices
+                            .iter()
                             .map(|(voice_id, voice)| {
                                 let gender_icon = if voice.gender == "female" { "♀" } else { "♂" };
                                 format!(
