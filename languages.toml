@@ -1,43 +1,126 @@
-[available.grammar]
-ga = { name = "Gaeilge", port = 10001 }
-fo = { name = "føroyskt", port = 10003 }
-smj = { name = "julevsámegiella", port = 10005 }
-se = { name = "davvisámegiella", port = 10000 }
-nb = { name = "norsk bokmål", port = 10004 }
-sma = { name = "Åarjelsaemien gïele", port = 10007 }
-sms = { name = "nuõrttsääʹmǩiõll", port = 10008 }
-smn = { name = "anarâškielâ", port = 10006 }
-kl = { name = "kalaallisut", port = 10002 }
+[config.tts]
+port = 40001
 
-[available.speller]
-se = { name = "davvisámegiella", port = 11000 }
-smn = { name = "anarâškielâ", port = 11006 }
-sma = { name = "Åarjelsaemien gïele", port = 11007 }
-smj = { name = "julevsámegiella", port = 11005 }
-sms = { name = "nuõrttsääʹmǩiõll", port = 11008 }
+[grammar]
+    [grammar.ga]
+    name = "Gaeilge"
+    port = 10001
 
-[available.hyphenation]
-se = { name = "davvisámegiella", port = 12000 }
+    [grammar.fo]
+    name = "føroyskt"
+    port = 10003
 
-[available.tts]
+    [grammar.smj]
+    name = "julevsámegiella"
+    port = 10005
 
-[available.tts.se]
+    [grammar.se]
+    name = "davvisámegiella"
+    port = 10000
+
+    [grammar.nb]
+    name = "norsk bokmål"
+    port = 10004
+
+    [grammar.sma]
+    name = "Åarjelsaemien gïele"
+    port = 10007
+
+    [grammar.sms]
+    name = "nuõrttsääʹmǩiõll"
+    port = 10008
+
+    [grammar.smn]
+    name = "anarâškielâ"
+    port = 10006
+
+    [grammar.kl]
+    name = "kalaallisut"
+    port = 10002
+
+[speller]
+    [speller.se]
+    name = "davvisámegiella"
+    port = 11000
+
+    [speller.smn]
+    name = "anarâškielâ"
+    port = 11006
+
+    [speller.sma]
+    name = "Åarjelsaemien gïele"
+    port = 11007
+
+    [speller.smj]
+    name = "julevsámegiella"
+    port = 11005
+
+    [speller.sms]
+    name = "nuõrttsääʹmǩiõll"
+    port = 11008
+
+[hyphenation]
+    [hyphenation.se]
+    name = "davvisámegiella"
+    port = 12000
+
+[tts]
+
+[tts.se]
 name = "davvisámegiella"
 
-[available.tts.se.voices]
-biret = { name = "Biret", gender = "female", port = 20001 }
-mahtte = { name = "Máhtte", gender = "male", port = 20006 }
+[tts.se.voices]
+    [tts.se.voices.biret]
+    name = "Biret"
+    gender = "female"
+    model = "multi-sami"
+    language = 1
+    speaker = 5
 
-[available.tts.sma]
+    [tts.se.voices.mahtte]
+    name = "Máhtte"
+    gender = "male"
+    model = "sme-male"
+
+    [tts.se.voices.sunna]
+    name = "Sunná"
+    gender = "female"
+    model = "multi-sami"
+    language = 1
+    speaker = 7
+
+[tts.sma]
 name = "Åarjelsaemien gïele"
 
-[available.tts.sma.voices]
-aanna = { name = "Aanna", gender = "female", speaker = 1, port = 20002 }
+[tts.sma.voices]
+    [tts.sma.voices.aanna]
+    name = "Aanna"
+    gender = "female"
+    model = "multi-sami"
+    language = 0
+    speaker = 1
 
-[available.tts.smj]
+[tts.smj]
 name = "julevsámegiella"
 
-[available.tts.smj.voices]
-nihkol = { name = "Nihkol", gender = "male", port = 20004 }
-abmut = { name = "Ábmut", gender = "male", speaker = 1, port = 20005 }
-sigga = { name = "Siggá", gender = "female", port = 20003 }
+[tts.smj.voices]
+    [tts.smj.voices.nihkol]
+    name = "Nihkol"
+    gender = "male"
+    speaker = 9
+    language = 2
+    model = "multi-sami"
+
+    [tts.smj.voices.abmut]
+    name = "Ábmut"
+    gender = "male"
+    speaker = 8
+    language = 2
+    model = "multi-sami"
+
+    [tts.smj.voices.sigga]
+    name = "Siggá"
+    gender = "female"
+    speaker = 3
+    language = 2
+    model = "multi-sami"
