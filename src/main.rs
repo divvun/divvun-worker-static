@@ -13,10 +13,16 @@ use serde_json::json;
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 struct Available {
-    grammar: HashMap<String, String>,
-    speller: HashMap<String, String>,
-    hyphenation: HashMap<String, String>,
+    grammar: HashMap<String, ServiceConfig>,
+    speller: HashMap<String, ServiceConfig>,
+    hyphenation: HashMap<String, ServiceConfig>,
     tts: HashMap<String, TtsConfig>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+struct ServiceConfig {
+    name: String,
+    port: u16,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -31,6 +37,7 @@ struct VoiceConfig {
     gender: String,
     #[serde(default)]
     speaker: Option<u32>,
+    port: u16,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -98,9 +105,9 @@ async fn index_get(Data(languages): Data<&Languages>) -> impl IntoResponse {
                 </details>
             </div>"#,
                 sorted_langs.iter()
-                    .map(|(tag, name)| format!(
+                    .map(|(tag, service)| format!(
                         "                <li><a href=\"/grammar/{}\"><code>{}</code></a> - {}</li>",
-                        tag, tag, name
+                        tag, tag, service.name
                     ))
                     .collect::<Vec<_>>()
                     .join("\n")
@@ -182,9 +189,9 @@ async fn index_get(Data(languages): Data<&Languages>) -> impl IntoResponse {
                 </details>
             </div>"#,
                 sorted_langs.iter()
-                    .map(|(tag, name)| format!(
+                    .map(|(tag, service)| format!(
                         "                <li><a href=\"/speller/{}\"><code>{}</code></a> - {}</li>",
-                        tag, tag, name
+                        tag, tag, service.name
                     ))
                     .collect::<Vec<_>>()
                     .join("\n")
@@ -246,24 +253,48 @@ async fn index_get(Data(languages): Data<&Languages>) -> impl IntoResponse {
 #[derive(Parser)]
 #[command(author, version, about, long_about = None)]
 struct Cli {
-    /// Host to bind the server to
-    #[arg(long, default_value = "127.0.0.1")]
-    host: String,
+    #[command(subcommand)]
+    command: Commands,
+}
 
-    /// Port to run the server on
-    #[arg(long, default_value_t = 4000)]
-    port: u16,
+#[derive(Parser)]
+enum Commands {
+    /// Start the web server
+    Serve {
+        /// Host to bind the server to
+        #[arg(long, default_value = "127.0.0.1")]
+        host: String,
+
+        /// Port to run the server on
+        #[arg(long, default_value_t = 4000)]
+        port: u16,
+    },
+    /// Generate something (placeholder)
+    Generate,
 }
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
     let cli = Cli::parse();
-    Ok(run(cli).await?)
+    
+    match cli.command {
+        Commands::Serve { host, port } => {
+            run_server(host, port).await?;
+        }
+        Commands::Generate => {
+            // Parse languages from TOML
+            let languages: Languages = toml::from_str(LANGUAGES)?;
+            
+            println!("{}", generate_nginx_config(&languages));
+        }
+    }
+    
+    Ok(())
 }
 
 const LANGUAGES: &str = include_str!("../languages.toml");
 
-async fn run(cli: Cli) -> anyhow::Result<()> {
+async fn run_server(host: String, port: u16) -> anyhow::Result<()> {
     tracing_subscriber::fmt::init();
 
     // Parse languages from TOML
@@ -276,9 +307,64 @@ async fn run(cli: Cli) -> anyhow::Result<()> {
         .data(languages)
         .with(Cors::default());
 
-    Server::new(TcpListener::bind((cli.host, cli.port)))
+    Server::new(TcpListener::bind((host, port)))
         .run(app)
         .await?;
 
     Ok(())
+}
+
+fn generate_nginx_config(languages: &Languages) -> String {
+    let mut configs = Vec::new();
+
+    // Generate grammar service configs
+    let mut grammar_services: Vec<_> = languages.available.grammar.iter().collect();
+    grammar_services.sort_by_key(|(tag, _)| *tag);
+    for (tag, service) in grammar_services {
+        configs.push(generate_location_block(&format!("/grammar/{}", tag), service.port));
+    }
+
+    // Generate speller service configs
+    let mut speller_services: Vec<_> = languages.available.speller.iter().collect();
+    speller_services.sort_by_key(|(tag, _)| *tag);
+    for (tag, service) in speller_services {
+        configs.push(generate_location_block(&format!("/speller/{}", tag), service.port));
+    }
+
+    // Generate hyphenation service configs
+    let mut hyphenation_services: Vec<_> = languages.available.hyphenation.iter().collect();
+    hyphenation_services.sort_by_key(|(tag, _)| *tag);
+    for (tag, service) in hyphenation_services {
+        configs.push(generate_location_block(&format!("/hyphenation/{}", tag), service.port));
+    }
+
+    // Generate TTS service configs
+    let mut tts_services: Vec<_> = languages.available.tts.iter().collect();
+    tts_services.sort_by_key(|(tag, _)| *tag);
+    for (tag, tts_config) in tts_services {
+        let mut voices: Vec<_> = tts_config.voices.iter().collect();
+        voices.sort_by_key(|(voice_id, _)| *voice_id);
+        for (voice_id, voice) in voices {
+            configs.push(generate_location_block(&format!("/tts/{}/{}", tag, voice_id), voice.port));
+        }
+    }
+
+    configs.join("\n\n")
+}
+
+fn generate_location_block(path: &str, port: u16) -> String {
+    format!(
+        r#"location {} {{
+    proxy_pass http://127.0.0.1:{}/;
+    proxy_http_version 1.1;
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_set_header Connection 'upgrade';
+    proxy_set_header Host $host;
+    proxy_cache_bypass $http_upgrade;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-Proto $scheme;
+}}"#,
+        path, port
+    )
 }

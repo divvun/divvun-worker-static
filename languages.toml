@@ -1,23 +1,23 @@
 [available.grammar]
-ga = "Gaeilge"
-fo = "føroyskt"
-smj = "julevsámegiella"
-se = "davvisámegiella"
-nb = "norsk bokmål"
-sma = "Åarjelsaemien gïele"
-sms = "nuõrttsääʹmǩiõll"
-smn = "anarâškielâ"
-kl = "kalaallisut"
+ga = { name = "Gaeilge", port = 10001 }
+fo = { name = "føroyskt", port = 10003 }
+smj = { name = "julevsámegiella", port = 10005 }
+se = { name = "davvisámegiella", port = 10000 }
+nb = { name = "norsk bokmål", port = 10004 }
+sma = { name = "Åarjelsaemien gïele", port = 10007 }
+sms = { name = "nuõrttsääʹmǩiõll", port = 10008 }
+smn = { name = "anarâškielâ", port = 10006 }
+kl = { name = "kalaallisut", port = 10002 }
 
 [available.speller]
-se = "davvisámegiella"
-smn = "anarâškielâ"
-sma = "Åarjelsaemien gïele"
-smj = "julevsámegiella"
-sms = "nuõrttsääʹmǩiõll"
+se = { name = "davvisámegiella", port = 11000 }
+smn = { name = "anarâškielâ", port = 11006 }
+sma = { name = "Åarjelsaemien gïele", port = 11007 }
+smj = { name = "julevsámegiella", port = 11005 }
+sms = { name = "nuõrttsääʹmǩiõll", port = 11008 }
 
 [available.hyphenation]
-se = "davvisámegiella"
+se = { name = "davvisámegiella", port = 12000 }
 
 [available.tts]
 
@@ -25,19 +25,19 @@ se = "davvisámegiella"
 name = "davvisámegiella"
 
 [available.tts.se.voices]
-biret = { name = "Biret", gender = "female" }
-mahtte = { name = "Máhtte", gender = "male" }
+biret = { name = "Biret", gender = "female", port = 20001 }
+mahtte = { name = "Máhtte", gender = "male", port = 20006 }
 
 [available.tts.sma]
 name = "Åarjelsaemien gïele"
 
 [available.tts.sma.voices]
-aanna = { name = "Aanna", gender = "female", speaker = 1 }
+aanna = { name = "Aanna", gender = "female", speaker = 1, port = 20002 }
 
 [available.tts.smj]
 name = "julevsámegiella"
 
 [available.tts.smj.voices]
-nihkol = { name = "Nihkol", gender = "male" }
-abmut = { name = "Ábmut", gender = "male", speaker = 1 }
-sigga = { name = "Siggá", gender = "female" }
+nihkol = { name = "Nihkol", gender = "male", port = 20004 }
+abmut = { name = "Ábmut", gender = "male", speaker = 1, port = 20005 }
+sigga = { name = "Siggá", gender = "female", port = 20003 }
