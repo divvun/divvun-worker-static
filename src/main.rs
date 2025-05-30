@@ -429,7 +429,7 @@ fn generate_nginx_config(languages: &LanguagesConfig) -> String {
             configs.push(generate_location_block(
                 &format!("/tts/{}/{}", tag, voice_id),
                 languages.config.tts.port,
-                &voice.model,
+                "",
                 &query,
             ));
         }
