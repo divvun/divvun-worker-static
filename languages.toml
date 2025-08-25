@@ -81,6 +81,8 @@ name = "davvisámegiella"
     name = "Máhtte"
     gender = "male"
     model = "sme-male"
+    language = 1
+    speaker = 2
 
     [tts.se.voices.sunna]
     name = "Sunná"
