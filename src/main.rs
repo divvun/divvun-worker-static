@@ -246,6 +246,7 @@ async fn index_get(Data(languages): Data<&LanguagesConfig>) -> impl IntoResponse
                 r#"            <div class="endpoint" id="tts">
                 <h3>Text-to-Speech</h3>
                 <p><span class="method post">POST</span> <code>/tts/:tag/:voice</code> <span class="response-type">audio/wav</span></p>
+                <p><strong>MP3:</strong> add <code>Accepts: audio/mpeg</code> header to get MP3 audio instead of WAV.</p>
                 <p>Convert text to speech. Available languages and voices:</p>
                 <ul>
 {}
