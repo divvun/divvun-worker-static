@@ -261,6 +261,10 @@ async fn index_get(Data(languages): Data<&LanguagesConfig>) -> impl IntoResponse
                     <summary>Response <code>audio/wav</code></summary>
                     <p>WAV audio file containing the synthesized speech.</p>
                 </details>
+                <details>
+                    <summary>Response <code>audio/mpeg</code></summary>
+                    <p>MP3 audio file containing the synthesized speech (if <code>Accepts: audio/mpeg</code> header provided)</p>
+                </details>
             </div>"#,
                 sorted_langs.iter()
                     .map(|(tag, config)| {
