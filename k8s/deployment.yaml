@@ -17,6 +17,7 @@ spec:
       containers:
       - name: divvun-worker-static
         image: ghcr.io/divvun/divvun-worker-static:latest
+        imagePullPolicy: Always
         ports:
         - containerPort: 4000
         livenessProbe:
