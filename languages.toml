@@ -1,68 +1,53 @@
-[config.tts]
-port = 40001
+[config]
+base_url = "https://api-giellalt.uit.no"
 
 [grammar]
     [grammar.ga]
     name = "Gaeilge"
-    port = 10001
 
     [grammar.fo]
     name = "føroyskt"
-    port = 10003
 
     [grammar.smj]
     name = "julevsámegiella"
-    port = 10005
 
     [grammar.se]
     name = "davvisámegiella"
-    port = 10000
 
     [grammar.nb]
     name = "norsk bokmål"
-    port = 10004
 
     [grammar.sma]
     name = "Åarjelsaemien gïele"
-    port = 10007
 
     [grammar.sms]
     name = "nuõrttsääʹmǩiõll"
-    port = 10008
 
     [grammar.smn]
     name = "anarâškielâ"
-    port = 10006
 
     [grammar.kl]
     name = "kalaallisut"
-    port = 10002
 
 [speller]
     [speller.se]
     name = "davvisámegiella"
-    port = 11000
 
     [speller.smn]
     name = "anarâškielâ"
-    port = 11006
 
     [speller.sma]
     name = "Åarjelsaemien gïele"
-    port = 11007
 
     [speller.smj]
     name = "julevsámegiella"
-    port = 11005
 
     [speller.sms]
     name = "nuõrttsääʹmǩiõll"
-    port = 11008
 
 [hyphenation]
     [hyphenation.se]
     name = "davvisámegiella"
-    port = 12000
 
 [tts]
 
@@ -73,23 +58,14 @@ name = "davvisámegiella"
     [tts.se.voices.biret]
     name = "Biret"
     gender = "female"
-    model = "multi-sami"
-    language = 1
-    speaker = 5
 
     [tts.se.voices.mahtte]
     name = "Máhtte"
     gender = "male"
-    model = "sme-male"
-    language = 1
-    speaker = 2
 
     [tts.se.voices.sunna]
     name = "Sunná"
     gender = "female"
-    model = "multi-sami"
-    language = 1
-    speaker = 7
 
 [tts.sma]
 name = "Åarjelsaemien gïele"
@@ -98,9 +74,6 @@ name = "Åarjelsaemien gïele"
     [tts.sma.voices.aanna]
     name = "Aanna"
     gender = "female"
-    model = "multi-sami"
-    language = 0
-    speaker = 1
 
 [tts.smj]
 name = "julevsámegiella"
@@ -109,20 +82,11 @@ name = "julevsámegiella"
     [tts.smj.voices.nihkol]
     name = "Nihkol"
     gender = "male"
-    speaker = 9
-    language = 2
-    model = "multi-sami"
 
     [tts.smj.voices.abmut]
     name = "Ábmut"
     gender = "male"
-    speaker = 8
-    language = 2
-    model = "multi-sami"
 
     [tts.smj.voices.sigga]
     name = "Siggá"
     gender = "female"
-    speaker = 3
-    language = 2
-    model = "multi-sami"
